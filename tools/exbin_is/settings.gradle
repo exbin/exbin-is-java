@@ -1,0 +1,3 @@
+rootProject.name = 'exbin_is'
+
+apply from: '../tools-settings.gradle'

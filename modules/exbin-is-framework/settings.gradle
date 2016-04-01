@@ -1,0 +1,3 @@
+rootProject.name = 'exbin-is-framework'
+
+apply from: '../modules-settings.gradle'
