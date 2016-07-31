@@ -25,7 +25,7 @@ dependencies {
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-frame-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-editor-api')
     compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-utils')
-    compile moduleDep('ExbinUtilsJava', 'net.sf.simplyhtml', 'simplyhtml')
+    compile moduleDep('ExbinUtilsJava', 'org.exbin.utils', 'simplyhtml')
     compile 'javax.persistence:persistence-api:1.0.2'
     compile 'org.swinglabs:swing-layout:1.0.3'
     runtime 'org.eclipse.persistence:javax.persistence:2.1.0'
