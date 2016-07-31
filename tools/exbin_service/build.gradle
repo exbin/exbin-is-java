@@ -31,11 +31,11 @@ repositories {
 }
 
 dependencies {
-    compile "org.exbin.xbup:xbup-core:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-client:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-service:${xbupVersion}"
-    compile "org.exbin.framework:exbin-framework-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-service-data:${frameworkVersion}"
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-client')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-service')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-service-data')
     compile 'commons-cli:commons-cli:1.2'
     compile 'org.eclipse.persistence:eclipselink:2.5.1'
     runtime 'mysql:mysql-connector-java:5.1.30'
@@ -45,11 +45,20 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
 
+def manifestClassPath() {
+    try {
+        return (configurations.runtime.collect { '../lib/' + it.getName() }).join(' ')
+    } catch (Exception) {
+        return ""
+    }
+}
+
 jar {
     manifest {
         attributes(
             'Main-Class': mainClass,
-            'Class-Path': configurations.runtime.collect {'../lib/' + it.getName() }.join(' ')
+            'Class-Path': manifestClassPath()
         )
     }
 }
+

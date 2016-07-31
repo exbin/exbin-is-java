@@ -1,8 +1,14 @@
-// Shared tools build
+// Shared modules build
 
 version = '0.2.0-SNAPSHOT'
-def repositoryName = "exbin-is-java"
-def libraryUrl = 'http://exbin.org'
+def repositoryName = "exbin-framework-java"
+def libraryUrl = 'http://framework.exbin.org'
+
+ext.depsExbinFrameworkJava = [
+    githubProfile: 'exbin',
+    githubRepo: "${repositoryName}",
+    version: "${version}"
+]
 
 ext.depsExbinUtilsJava = [
     githubProfile: 'exbin',
@@ -22,19 +28,11 @@ ext.depsXbupDataJava = [
     version: '0.2.0-SNAPSHOT'
 ]
 
-ext.depsExbinFrameworkJava = [
-    githubProfile: 'exbin',
-    githubRepo: 'exbin-framework-java',
-    version: '0.2.0-SNAPSHOT'
-]
-
 ext.depsDeltahexJava = [
     githubProfile: 'exbin',
     githubRepo: 'deltahex-java',
     version: '0.1.1-SNAPSHOT'
 ]
-
-ext.depsThis = 'ExbinIsJava'
 
 buildscript {
     repositories {
@@ -46,7 +44,7 @@ buildscript {
     }
 }
 
-['java', 'distribution', 'maven-publish', 'at.bxm.svntools'].each {
+['java', 'maven-publish', 'at.bxm.svntools'].each {
     apply plugin: it
 }
 
@@ -80,16 +78,6 @@ artifacts {
     tests testJar
 }
 
-task sourceJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.java
-}
-
-task javadocJar (type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
 def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
     return tasks.create("svnDownload${moduleName}", at.bxm.gradleplugins.svntools.tasks.SvnExport) {
         svnUrl = svnUrlValue
@@ -101,10 +89,6 @@ def createSvnDownloadTask(def moduleName, def svnUrlValue, def targetDirValue) {
 // - local maven repository module will be used if available
 // - otherwise module will be download to deps folder
 project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
-    if (depsName == ext.depsThis) {
-        return project(":modules:" + moduleName)
-    }
-
     def mavenModuleDir = repositories.mavenLocal().url.path + packageName.replace('.', '/') + '/' + moduleName + '/' + ext['deps' + depsName].version
     if (new File(mavenModuleDir).isDirectory()) {
         // Use maven package if available
@@ -112,10 +96,6 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
     }
 
     def depsDir = rootProject.buildDir.parent + '/deps/'
-    if (gradle.startParameter.taskNames == ['clean']) {
-        return project(':deps')
-    }
-
     def depModuleDir = depsDir + moduleName
     if (!new File(depModuleDir).isDirectory()) {
         // Download module
@@ -140,10 +120,6 @@ project.dependencies.ext.moduleDep = { depsName, packageName, moduleName ->
 }
 
 project.dependencies.ext.moduleDepPath = { depsName, moduleName ->
-    if (depsName == ext.depsThis) {
-        return ":modules:${moduleName}"
-    }
-
     return ":deps:${moduleName}"
 }
 

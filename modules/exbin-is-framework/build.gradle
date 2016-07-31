@@ -1,4 +1,4 @@
-apply from: '../modules.gradle'
+apply from: '../exbin-is-java-modules.gradle'
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = ''
@@ -13,20 +13,19 @@ repositories {
 }
 
 dependencies {
-    compile "org.exbin.xbup:xbup-core:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-catalog:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-operation:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-plugin:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-parser-tree:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-parser-command:${xbupVersion}"
-    compile "org.exbin.xbup:xbup-client:${xbupDataVersion}"
-    compile "org.exbin.xbup.data:xbup-data-visual:${xbupDataVersion}"
-    compile "org.exbin.framework:exbin-framework-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-frame-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-editor-api:${frameworkVersion}"
-    compile "org.exbin.framework:exbin-framework-gui-utils:${frameworkVersion}"
-    compile "ca.psc-consulting.hexedit:hexedit:${frameworkVersion}"
-    compile "net.sf.simplyhtml:simplyhtml:${frameworkVersion}"
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-core')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-catalog')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-operation')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-plugin')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-parser-tree')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-parser-command')
+    compile moduleDep('XbupJava', 'org.exbin.xbup', 'xbup-client')
+    compile moduleDep('XbupDataJava', 'org.exbin.xbup.data', 'xbup-data-visual')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-api')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-frame-api')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-editor-api')
+    compile moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-utils')
+    compile moduleDep('ExbinUtilsJava', 'net.sf.simplyhtml', 'simplyhtml')
     compile 'javax.persistence:persistence-api:1.0.2'
     compile 'org.swinglabs:swing-layout:1.0.3'
     runtime 'org.eclipse.persistence:javax.persistence:2.1.0'
