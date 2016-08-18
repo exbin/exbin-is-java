@@ -20,8 +20,10 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
+import org.exbin.framework.gui.utils.LanguageUtils;
 import org.exbin.xbup.client.XBCatalogServiceClient;
 import org.exbin.framework.gui.utils.WindowUtils;
 
@@ -37,6 +39,7 @@ public class LoginDialog extends javax.swing.JDialog {
     private XBCatalogServiceClient service;
     private final List<String> connectionList = new ArrayList<>();
     private ConnectionListener connectionListener;
+    private final ResourceBundle resourceBundle = LanguageUtils.getResourceBundleByClass(LoginDialog.class);
 
     private static final String PREFERENCES_PREFIX = "catalogConnection";
 
@@ -98,18 +101,17 @@ public class LoginDialog extends javax.swing.JDialog {
         statusTextLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/exbin/framework/exbin/dialog/resources/ConnectionDialog"); // NOI18N
-        setTitle(bundle.getString("title")); // NOI18N
+        setTitle(resourceBundle.getString("title")); // NOI18N
 
         connectionHeaderPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        prereleaseWarningLabel.setText(bundle.getString("prereleaseWarningLabel.text")); // NOI18N
+        prereleaseWarningLabel.setText(resourceBundle.getString("prereleaseWarningLabel.text")); // NOI18N
 
         jLayeredPane1.setBackground(new java.awt.Color(204, 255, 204));
         jLayeredPane1.setOpaque(true);
 
         serviceLabel.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        serviceLabel.setText(bundle.getString("serviceLabel.text")); // NOI18N
+        serviceLabel.setText(resourceBundle.getString("serviceLabel.text")); // NOI18N
         jLayeredPane1.add(serviceLabel);
         serviceLabel.setBounds(100, 0, 330, 43);
 
@@ -154,16 +156,16 @@ public class LoginDialog extends javax.swing.JDialog {
 
         getContentPane().add(connectionHeaderPanel, java.awt.BorderLayout.NORTH);
 
-        loginPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("loginPanel.border.title"))); // NOI18N
+        loginPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceBundle.getString("loginPanel.border.title"))); // NOI18N
         loginPanel.setEnabled(false);
 
-        usernameLabel.setText(bundle.getString("usernameLabel.text")); // NOI18N
+        usernameLabel.setText(resourceBundle.getString("usernameLabel.text")); // NOI18N
         usernameLabel.setEnabled(false);
 
         usernameTextField.setText("admin");
         usernameTextField.setEnabled(false);
 
-        passwordLabel.setText(bundle.getString("passwordLabel.text")); // NOI18N
+        passwordLabel.setText(resourceBundle.getString("passwordLabel.text")); // NOI18N
         passwordLabel.setEnabled(false);
 
         passwordField.setEnabled(false);
@@ -194,14 +196,14 @@ public class LoginDialog extends javax.swing.JDialog {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        okButton.setText(bundle.getString("okButton.text")); // NOI18N
+        okButton.setText(resourceBundle.getString("okButton.text")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
-        cancelButton.setText(bundle.getString("cancelButton.text")); // NOI18N
+        cancelButton.setText(resourceBundle.getString("cancelButton.text")); // NOI18N
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -210,7 +212,7 @@ public class LoginDialog extends javax.swing.JDialog {
 
         accessTypeButtonGroup.add(anonymousRadioButton);
         anonymousRadioButton.setSelected(true);
-        anonymousRadioButton.setText(bundle.getString("anonymousRadioButton.text")); // NOI18N
+        anonymousRadioButton.setText(resourceBundle.getString("anonymousRadioButton.text")); // NOI18N
         anonymousRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 anonymousRadioButtonActionPerformed(evt);
@@ -218,7 +220,7 @@ public class LoginDialog extends javax.swing.JDialog {
         });
 
         accessTypeButtonGroup.add(loginRadioButton);
-        loginRadioButton.setText(bundle.getString("loginRadioButton.text")); // NOI18N
+        loginRadioButton.setText(resourceBundle.getString("loginRadioButton.text")); // NOI18N
         loginRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginRadioButtonActionPerformed(evt);

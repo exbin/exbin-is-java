@@ -41,13 +41,13 @@ import org.exbin.framework.gui.help.api.GuiHelpModuleApi;
 import org.exbin.framework.gui.menu.api.GuiMenuModuleApi;
 import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
-import org.exbin.framework.gui.utils.ActionUtils;
 import org.exbin.framework.api.XBApplicationModuleRepository;
+import org.exbin.framework.gui.utils.LanguageUtils;
 
 /**
  * The main class of the ExbinIs application.
  *
- * @version 0.2.0 2016/03/02
+ * @version 0.2.0 2016/08/18
  * @author ExBin Project (http://exbin.org)
  */
 public class ExbinIs {
@@ -61,7 +61,7 @@ public class ExbinIs {
         Preferences preferences;
         boolean verboseMode;
         boolean devMode;
-        final ResourceBundle bundle = ActionUtils.getResourceBundleByClass(ExbinIs.class);
+        final ResourceBundle bundle = LanguageUtils.getResourceBundleByClass(ExbinIs.class);
 
         try {
             preferences = Preferences.userNodeForPackage(ExbinIs.class);
@@ -92,13 +92,13 @@ public class ExbinIs {
 
                 XBBaseApplication app = new XBBaseApplication();
                 app.setAppPreferences(preferences);
-                app.setAppBundle(bundle, ActionUtils.getResourceBaseNameBundleByClass(ExbinIs.class));
-                app.init();
+                app.setAppBundle(bundle, LanguageUtils.getResourceBaseNameBundleByClass(ExbinIs.class));
 
                 XBApplicationModuleRepository moduleRepository = app.getModuleRepository();
                 moduleRepository.addClassPathModules();
                 moduleRepository.addModulesFromManifest(ExbinIs.class);
                 moduleRepository.initModules();
+                app.init();
 
                 GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
                 GuiEditorModuleApi editorModule = moduleRepository.getModuleByInterface(GuiEditorModuleApi.class);
@@ -112,6 +112,7 @@ public class ExbinIs {
                 EditorXbupModule xbupEditorModule = moduleRepository.getModuleByInterface(EditorXbupModule.class);
                 final EditorTextModule textEditorModule = moduleRepository.getModuleByInterface(EditorTextModule.class);
 
+                frameModule.createMainMenu();
                 aboutModule.registerDefaultMenuItem();
 
                 frameModule.registerExitAction();
