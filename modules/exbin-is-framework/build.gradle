@@ -15,11 +15,11 @@ if (!hasProperty('mainClass')) {
 }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
     flatDir {
         dirs "../../lib"
     }
+    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
