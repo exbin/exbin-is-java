@@ -1,6 +1,6 @@
 // Shared modules build
 
-version = '0.2.0-SNAPSHOT'
+version = '0.2.1-SNAPSHOT'
 def repositoryName = "exbin-framework-java"
 def libraryUrl = 'http://framework.exbin.org'
 
@@ -19,13 +19,13 @@ ext.depsExbinUtilsJava = [
 ext.depsXbupJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsXbupDataJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-data-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsDeltahexJava = [

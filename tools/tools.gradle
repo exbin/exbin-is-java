@@ -1,37 +1,37 @@
 // Shared tools build
 
-version = '0.2.0-SNAPSHOT'
+version = '0.2.1-SNAPSHOT'
 def repositoryName = "exbin-is-java"
 def libraryUrl = 'http://exbin.org'
 
 ext.depsExbinUtilsJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-utils-java',
-    version: '0.1.2-SNAPSHOT'
+    version: '0.1.3-SNAPSHOT'
 ]
 
 ext.depsXbupJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsXbupDataJava = [
     githubProfile: 'exbin',
     githubRepo: 'xbup-data-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsExbinFrameworkJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-framework-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsDeltahexJava = [
     githubProfile: 'exbin',
     githubRepo: 'deltahex-java',
-    version: '0.1.2-SNAPSHOT'
+    version: '0.1.3-SNAPSHOT'
 ]
 
 ext.depsThis = 'ExbinIsJava'
