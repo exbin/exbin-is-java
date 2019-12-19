@@ -21,8 +21,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
+import org.exbin.framework.api.Preferences;
 import org.exbin.framework.gui.utils.LanguageUtils;
 import org.exbin.xbup.client.XBCatalogServiceClient;
 import org.exbin.framework.gui.utils.WindowUtils;
@@ -52,7 +52,6 @@ public class LoginDialog extends javax.swing.JDialog {
     }
 
     private void init() {
-        WindowUtils.initWindow(this);
         WindowUtils.assignGlobalKeyListener(this, okButton, cancelButton);
     }
 
@@ -394,7 +393,7 @@ public class LoginDialog extends javax.swing.JDialog {
 
     public void loadConnectionList(Preferences preferences) {
         long pos = 1;
-        while (preferences.get(PREFERENCES_PREFIX + String.valueOf(pos), null) != null) {
+        while (preferences.get(PREFERENCES_PREFIX + String.valueOf(pos)) != null) {
             connectionList.add(preferences.get(PREFERENCES_PREFIX + String.valueOf(pos), ""));
             pos++;
         }

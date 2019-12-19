@@ -19,7 +19,7 @@ package org.exbin.framework.exbin;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.Preferences;
+import org.exbin.framework.api.Preferences;
 import org.exbin.framework.api.XBApplication;
 import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.xbup.client.XBCatalogNetServiceClient;

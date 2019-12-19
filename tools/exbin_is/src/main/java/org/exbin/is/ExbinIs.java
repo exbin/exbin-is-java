@@ -20,13 +20,13 @@ import java.awt.Dimension;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.prefs.Preferences;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.exbin.framework.XBBaseApplication;
+import org.exbin.framework.api.Preferences;
 import org.exbin.xbup.core.parser.basic.XBHead;
 import org.exbin.framework.editor.text.EditorTextModule;
 import org.exbin.framework.editor.xbup.EditorXbupModule;
@@ -43,6 +43,7 @@ import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.gui.utils.LanguageUtils;
+import org.exbin.framework.preferences.PreferencesWrapper;
 
 /**
  * The main class of the ExbinIs application.
@@ -64,7 +65,7 @@ public class ExbinIs {
         final ResourceBundle bundle = LanguageUtils.getResourceBundleByClass(ExbinIs.class);
 
         try {
-            preferences = Preferences.userNodeForPackage(ExbinIs.class);
+            preferences = new PreferencesWrapper(java.util.prefs.Preferences.userNodeForPackage(ExbinIs.class));
         } catch (SecurityException ex) {
             preferences = null;
         }
