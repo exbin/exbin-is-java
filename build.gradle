@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-['base', 'distribution', 'maven', 'at.bxm.svntools'].each {
+['base', 'distribution', 'maven-publish', 'at.bxm.svntools'].each {
     apply plugin: it
 }
 
@@ -95,7 +95,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                         into('lib') {
                             from p.jar.archivePath
                             include '*'
-                            from p.configurations.runtime
+                            from p.configurations.runtimeClasspath
                             include '*'
                         }
                     }
@@ -104,7 +104,7 @@ if (!project.gradle.startParameter.projectProperties.containsKey("moduleDep")) {
                 project(':tools').subprojects.each { p ->
                     p.plugins.withType(JavaPlugin) {
                         into('lib') {
-                            from p.configurations.runtime
+                            from p.configurations.runtimeClasspath
                             include '*'
                         }
 
