@@ -16,7 +16,6 @@
 package org.exbin.is.service;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,35 +25,35 @@ import javax.persistence.FlushModeType;
 import javax.persistence.Persistence;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import org.exbin.xbup.catalog.XBAECatalog;
-import org.exbin.xbup.catalog.entity.XBERoot;
 import org.exbin.xbup.catalog.entity.service.XBEXDescService;
 import org.exbin.xbup.catalog.entity.service.XBEXFileService;
 import org.exbin.xbup.catalog.entity.service.XBEXHDocService;
 import org.exbin.xbup.catalog.entity.service.XBEXIconService;
 import org.exbin.xbup.catalog.entity.service.XBEXLangService;
-import org.exbin.xbup.catalog.entity.service.XBEXLineService;
+import org.exbin.xbup.catalog.entity.service.XBEXUiService;
 import org.exbin.xbup.catalog.entity.service.XBEXNameService;
-import org.exbin.xbup.catalog.entity.service.XBEXPaneService;
 import org.exbin.xbup.catalog.entity.service.XBEXPlugService;
 import org.exbin.xbup.catalog.entity.service.XBEXStriService;
-import org.exbin.xbup.catalog.update.XBCUpdatePHPHandler;
+import org.exbin.xbup.catalog.update.XBCatalogServiceUpdateHandler;
+import org.exbin.xbup.client.XBCatalogNetServiceClient;
+import org.exbin.xbup.client.XBTCPServiceClient;
 import org.exbin.xbup.core.block.declaration.XBContext;
 import org.exbin.xbup.core.block.declaration.XBDeclaration;
 import org.exbin.xbup.core.block.declaration.XBGroupDecl;
 import org.exbin.xbup.core.block.declaration.catalog.XBCFormatDecl;
-import org.exbin.xbup.core.catalog.base.service.XBCNodeService;
+import org.exbin.xbup.core.catalog.XBACatalog;
 import org.exbin.xbup.core.catalog.base.service.XBCXDescService;
 import org.exbin.xbup.core.catalog.base.service.XBCXFileService;
 import org.exbin.xbup.core.catalog.base.service.XBCXHDocService;
 import org.exbin.xbup.core.catalog.base.service.XBCXIconService;
 import org.exbin.xbup.core.catalog.base.service.XBCXLangService;
-import org.exbin.xbup.core.catalog.base.service.XBCXLineService;
+import org.exbin.xbup.core.catalog.base.service.XBCXUiService;
 import org.exbin.xbup.core.catalog.base.service.XBCXNameService;
-import org.exbin.xbup.core.catalog.base.service.XBCXPaneService;
 import org.exbin.xbup.core.catalog.base.service.XBCXPlugService;
 import org.exbin.xbup.core.catalog.base.service.XBCXStriService;
 import org.exbin.xbup.core.parser.XBProcessingException;
 import org.exbin.xbup.service.XBCatalogNetServiceServer;
+import org.exbin.xbup.service.XBTCPServiceServer;
 
 /**
  * Instance class for XBUP framework service.
@@ -99,7 +98,20 @@ public class ExbinServiceInstance {
 
         Logger.getLogger(ExbinServiceInstance.class.getName()).log(XBCatalogNetServiceServer.XB_SERVICE_STATUS, (resourceBundle.getString("init_service") + " " + tcpipInterface + ":" + Integer.toString(tcpipPortInt) + "..."));
 
-        serviceServer = new XBCatalogNetServiceServer(entityManager, catalog);
+        serviceServer = new XBCatalogNetServiceServer();
+        serviceServer.setCatalogProvider(new XBTCPServiceServer.CatalogProvider() {
+            @Override
+            public XBACatalog createCatalog() {
+                if (catalog == null) {
+                    initCatalog();
+                    performUpdate(); 
+               } else {
+                    ExbinServiceInstance.this.createCatalog();
+                }
+
+                return catalog;
+            }
+        });
 
         serviceServer.setDebugMode(debugMode);
         try {
@@ -126,7 +138,7 @@ public class ExbinServiceInstance {
     }
 
     private void initCatalog() {
-        Logger.getLogger(ExbinServiceInstance.class.getName()).log(XBCatalogNetServiceServer.XB_SERVICE_STATUS, (resourceBundle.getString("init_catalog") + "..."));
+        Logger.getLogger(ExbinServiceInstance.class.getName()).log(XBCatalogNetServiceServer.XB_SERVICE_STATUS, "{0}...", resourceBundle.getString("init_catalog"));
         try {
             derbyMode = false;
             // Database Initialization
@@ -135,29 +147,11 @@ public class ExbinServiceInstance {
                 derbyHome += "-dev";
             }
             System.setProperty("derby.system.home", derbyHome);
-            EntityManagerFactory emf;
-            String persistenceUnitName;
             try {
-                if (rootCatalogMode) {
-                    if (devMode) {
-                        persistenceUnitName = "XBServiceMySQLDevPU";
-                    } else {
-                        persistenceUnitName = "XBServiceMySQLPU";
-                    }
-                } else {
-                    persistenceUnitName = "XBServicePU";
-                }
-
-                emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-                entityManager = emf.createEntityManager();
-                catalog = createCatalog(entityManager);
+                createCatalog();
             } catch (DatabaseException | javax.persistence.PersistenceException e) {
-                persistenceUnitName = "XBServiceDerbyPU";
-
-                emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-                entityManager = emf.createEntityManager();
-                catalog = createCatalog(entityManager);
                 derbyMode = true;
+                createCatalog();
             }
 
             if (catalog.isShallInit()) {
@@ -168,9 +162,46 @@ public class ExbinServiceInstance {
         }
     }
 
+    private void createCatalog() {
+        String persistenceUnitName;
+        if (derbyMode) {
+            persistenceUnitName = "XBServiceDerbyPU";
+
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+            entityManager = emf.createEntityManager();
+            catalog = createCatalog(entityManager);
+        } else {
+            if (rootCatalogMode) {
+                if (devMode) {
+                    persistenceUnitName = "XBServiceMySQLDevPU";
+                } else {
+                    persistenceUnitName = "XBServiceMySQLPU";
+                }
+            } else {
+                persistenceUnitName = "XBServicePU";
+            }
+
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+            entityManager = emf.createEntityManager();
+            catalog = createCatalog(entityManager);
+        }
+
+        // TODO Separate method?
+        Long[] serviceFormatPath = new Long[3];
+        serviceFormatPath[0] = 0l;
+        serviceFormatPath[1] = 2l;
+        serviceFormatPath[2] = 0l;
+        XBCFormatDecl serviceFormatDecl = (XBCFormatDecl) catalog.findFormatTypeByPath(serviceFormatPath, 0);
+        XBContext serviceContext = new XBContext();
+        serviceFormatDecl.getGroupDecls().forEach(groupDeclservice -> {
+            serviceContext.getGroups().add(XBDeclaration.convertCatalogGroup(groupDeclservice, catalog));
+        });
+        catalog.setRootContext(serviceContext);
+    }
+
     private void performUpdate() {
         // TODO: Only single connection for testing purposes (no connection pooling yet)
-        shallUpdate = (serviceServer.shallUpdate() || forceUpdate) && (!rootCatalogMode);
+        shallUpdate = (serviceServer.shallUpdate(catalog) || forceUpdate) && (!rootCatalogMode);
         try {
             Logger.getLogger(ExbinServiceInstance.class.getName()).log(XBCatalogNetServiceServer.XB_SERVICE_STATUS, "");
             Logger.getLogger(ExbinServiceInstance.class.getName()).log(XBCatalogNetServiceServer.XB_SERVICE_STATUS, resourceBundle.getString("init_service_success"));
@@ -184,18 +215,21 @@ public class ExbinServiceInstance {
                     catalog.initCatalog();
                 }
 
-                XBCNodeService nodeService = (XBCNodeService) catalog.getCatalogService(XBCNodeService.class);
-                Date lastUpdate = serviceServer.getWsHandler().getPort().getRootLastUpdate();
-                Date localLastUpdate = nodeService.getRoot().getLastUpdate();
-                if (localLastUpdate == null || localLastUpdate.before(lastUpdate)) {
+                if (serviceServer.shallUpdate(catalog)) {
                     // TODO: As there is currently no diff update available - wipe out entire database instead
                     EntityManagerFactory emfDrop = Persistence.createEntityManagerFactory(derbyMode ? "XBServiceDerbyPU-drop" : "XBServicePU-drop");
                     EntityManager emDrop = emfDrop.createEntityManager();
                     emDrop.setFlushMode(FlushModeType.AUTO);
                     catalog = (XBAECatalog) createCatalog(emDrop);
                     ((XBAECatalog) catalog).initCatalog();
-                    nodeService = (XBCNodeService) catalog.getCatalogService(XBCNodeService.class);
-                    performUpdate((XBERoot) nodeService.getRoot(), lastUpdate);
+
+                    int defaultPort = devMode ? XBTCPServiceClient.DEFAULT_DEV_PORT : XBTCPServiceClient.DEFAULT_PORT;
+                    String mainCatalogHost = devMode ? XBTCPServiceClient.MAIN_DEV_CATALOG_HOST : XBTCPServiceClient.MAIN_CATALOG_HOST;
+                    XBCatalogNetServiceClient mainClient = new XBCatalogNetServiceClient(mainCatalogHost, defaultPort);
+                    XBCatalogServiceUpdateHandler updateHandler = new XBCatalogServiceUpdateHandler(catalog, mainClient);
+                    updateHandler.init();
+                    updateHandler.fireUsageEvent(false);
+                    updateHandler.performUpdateMain();
                 }
 
                 Logger.getLogger(ExbinServiceInstance.class.getName()).log(XBCatalogNetServiceServer.XB_SERVICE_STATUS, "");
@@ -205,15 +239,6 @@ public class ExbinServiceInstance {
         } catch (XBProcessingException ex) {
             Logger.getLogger(ExbinServiceInstance.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private void performUpdate(XBERoot catalogRoot, Date lastUpdate) {
-        XBCUpdatePHPHandler wsHandler = new XBCUpdatePHPHandler((XBAECatalog) catalog);
-        wsHandler.init();
-        wsHandler.getPort().getLanguageId("en");
-
-        wsHandler.fireUsageEvent(false);
-        wsHandler.updateCatalog(catalogRoot, lastUpdate);
     }
 
     private XBAECatalog createCatalog(EntityManager em) {
@@ -226,8 +251,7 @@ public class ExbinServiceInstance {
         ((XBAECatalog) createdCatalog).addCatalogService(XBCXFileService.class, new XBEXFileService((XBAECatalog) createdCatalog));
         ((XBAECatalog) createdCatalog).addCatalogService(XBCXIconService.class, new XBEXIconService((XBAECatalog) createdCatalog));
         ((XBAECatalog) createdCatalog).addCatalogService(XBCXPlugService.class, new XBEXPlugService((XBAECatalog) createdCatalog));
-        ((XBAECatalog) createdCatalog).addCatalogService(XBCXLineService.class, new XBEXLineService((XBAECatalog) createdCatalog));
-        ((XBAECatalog) createdCatalog).addCatalogService(XBCXPaneService.class, new XBEXPaneService((XBAECatalog) createdCatalog));
+        ((XBAECatalog) createdCatalog).addCatalogService(XBCXUiService.class, new XBEXUiService((XBAECatalog) createdCatalog));
         ((XBAECatalog) createdCatalog).addCatalogService(XBCXHDocService.class, new XBEXHDocService((XBAECatalog) createdCatalog));
         return createdCatalog;
     }

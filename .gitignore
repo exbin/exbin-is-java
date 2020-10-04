@@ -10,3 +10,4 @@ target/
 *~
 /resources/private/
 
+/deps/.gradle/
