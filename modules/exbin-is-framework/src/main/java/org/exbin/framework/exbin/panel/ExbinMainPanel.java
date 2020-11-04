@@ -28,7 +28,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import org.exbin.xbup.client.XBCatalogServiceClient;
 import org.exbin.xbup.core.catalog.XBACatalog;
-import org.exbin.framework.gui.menu.api.MenuManagement;
+import org.exbin.framework.gui.action.api.MenuManagement;
 
 /**
  * ExBin IS main panel.
@@ -122,7 +122,6 @@ public class ExbinMainPanel extends javax.swing.JPanel {
 //
 //        // return false;
 //    }
-
     public void setPanel(JPanel panel) {
         activePageScrollPane.setViewportView(panel);
     }
@@ -139,7 +138,6 @@ public class ExbinMainPanel extends javax.swing.JPanel {
 //        catalogEditorPanel.setMainFrameManagement(mainFramenManagement);
 //        catalogSearchPanel.setMainFrameManagement(mainFramenManagement);
 //    }
-
     public void setCatalog(XBACatalog catalog) {
 //        catalogAvailabilityPanel.setCatalog(catalog);
 //        catalogStatusPanel.setCatalog(catalog);
