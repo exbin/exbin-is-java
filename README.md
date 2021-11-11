@@ -31,7 +31,7 @@ You can either download and install gradle or use gradlew or gradlew.bat scripts
 
 Build commands: "gradle build" and "gradle distZip"
 
-Dependecies are either downloaded or loaded from local maven repository. 
+Dependencies are either downloaded or loaded from local maven repository. 
 
 License
 -------
