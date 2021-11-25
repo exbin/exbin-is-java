@@ -1,14 +1,14 @@
-apply from: '../exbin-is-java-modules.gradle'
-
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-    }
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
+
+group = 'org.exbin.framework'
+ext.libraryName = 'ExBin IS Library'
+ext.libraryDescription = 'Library for functionality in ExBin IS'
+
+apply from: '../exbin-is-java-modules.gradle'
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = ''
@@ -37,7 +37,6 @@ dependencies {
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-action-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-file-api')
     implementation moduleDep('ExbinFrameworkJava', 'org.exbin.framework', 'exbin-framework-gui-utils')
-    implementation moduleDep('ExbinAuxiliaryJava', 'org.exbin.auxiliary', 'simplyhtml')
     implementation 'javax.persistence:persistence-api:1.0.2'
     implementation 'org.swinglabs:swing-layout:1.0.3'
     runtimeOnly 'org.eclipse.persistence:javax.persistence:2.2.1'

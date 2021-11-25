@@ -1,14 +1,10 @@
-apply from: '../tools.gradle'
-
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-    dependencies {
-        classpath("at.bxm.gradleplugins:gradle-svntools-plugin:latest.integration")
-    }
+plugins {
+    id 'java'
+    id 'distribution'
+    id 'maven-publish'
 }
+
+apply from: '../tools.gradle'
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'org.exbin.is.service.ExbinService'
@@ -16,7 +12,7 @@ if (!hasProperty('mainClass')) {
 }
 
 def configureExec(task) {
-    task.main = mainClass
+    task.mainClass = mainClass
     task.classpath = sourceSets.main.runtimeClasspath
     if (!hasProperty('mainClass')) {
         task.args appArgs

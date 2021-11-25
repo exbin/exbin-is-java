@@ -37,7 +37,7 @@ import org.exbin.framework.gui.editor.api.GuiEditorModuleApi;
 import org.exbin.framework.gui.frame.api.ApplicationFrameHandler;
 import org.exbin.framework.gui.frame.api.GuiFrameModuleApi;
 import org.exbin.framework.gui.help.api.GuiHelpModuleApi;
-import org.exbin.framework.gui.menu.api.GuiMenuModuleApi;
+import org.exbin.framework.gui.action.api.GuiActionModuleApi;
 import org.exbin.framework.gui.options.api.GuiOptionsModuleApi;
 import org.exbin.framework.gui.undo.api.GuiUndoModuleApi;
 import org.exbin.framework.api.XBApplicationModuleRepository;
@@ -102,7 +102,7 @@ public class ExbinIs {
 
                 GuiFrameModuleApi frameModule = moduleRepository.getModuleByInterface(GuiFrameModuleApi.class);
                 GuiEditorModuleApi editorModule = moduleRepository.getModuleByInterface(GuiEditorModuleApi.class);
-                GuiMenuModuleApi menuModule = moduleRepository.getModuleByInterface(GuiMenuModuleApi.class);
+                GuiActionModuleApi actionModule = moduleRepository.getModuleByInterface(GuiActionModuleApi.class);
                 GuiAboutModuleApi aboutModule = moduleRepository.getModuleByInterface(GuiAboutModuleApi.class);
                 GuiHelpModuleApi helpModule = moduleRepository.getModuleByInterface(GuiHelpModuleApi.class);
                 GuiUndoModuleApi undoModule = moduleRepository.getModuleByInterface(GuiUndoModuleApi.class);
@@ -119,7 +119,7 @@ public class ExbinIs {
                 frameModule.registerStatusBarVisibilityActions();
 
                 // Register clipboard editing actions
-                menuModule.registerMenuClipboardActions();
+                actionModule.registerMenuClipboardActions();
 
                 optionsModule.registerMenuAction();
 
@@ -130,7 +130,7 @@ public class ExbinIs {
                 mainPanel.setPanel(dataModule.getTableEditPanel());
                 frameHandler.setMainPanel(mainPanel);
                 frameHandler.setDefaultSize(new Dimension(600, 400));
-                frameHandler.show();
+                frameHandler.showFrame();
 
                 exbinModule.openConnectionDialog();
             }
