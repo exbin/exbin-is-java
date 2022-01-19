@@ -24,8 +24,8 @@ import org.exbin.framework.api.XBModuleRepositoryUtils;
 import org.exbin.xbup.client.XBCatalogNetServiceClient;
 import org.exbin.framework.exbin.dialog.LoginDialog;
 import org.exbin.framework.exbin.panel.ExbinMainPanel;
-import org.exbin.framework.gui.file.api.GuiFileModuleApi;
-import org.exbin.framework.gui.utils.WindowUtils;
+import org.exbin.framework.file.api.FileModuleApi;
+import org.exbin.framework.utils.WindowUtils;
 import org.exbin.framework.api.XBApplicationModule;
 import org.exbin.xbup.plugin.XBModuleHandler;
 
@@ -51,7 +51,7 @@ public class ExbinModule implements XBApplicationModule {
         this.application = (XBApplication) moduleHandler;
 
         // Register file types
-        GuiFileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(GuiFileModuleApi.class);
+        FileModuleApi fileModule = application.getModuleRepository().getModuleByInterface(FileModuleApi.class);
 //        fileModule.addFileType(new XBTFileType());
 //        fileModule.addFileType(new TXTFileType());
     }

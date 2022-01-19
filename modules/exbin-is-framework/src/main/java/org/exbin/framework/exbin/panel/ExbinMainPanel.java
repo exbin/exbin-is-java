@@ -28,7 +28,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import org.exbin.xbup.client.XBCatalogServiceClient;
 import org.exbin.xbup.core.catalog.XBACatalog;
-import org.exbin.framework.gui.action.api.MenuManagement;
+import org.exbin.framework.action.api.MenuManagement;
 
 /**
  * ExBin IS main panel.
