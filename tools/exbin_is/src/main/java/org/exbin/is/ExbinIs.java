@@ -19,6 +19,7 @@ import java.awt.Dimension;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.ParametersAreNonnullByDefault;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -39,7 +40,7 @@ import org.exbin.framework.frame.api.FrameModuleApi;
 import org.exbin.framework.help.api.HelpModuleApi;
 import org.exbin.framework.action.api.ActionModuleApi;
 import org.exbin.framework.options.api.OptionsModuleApi;
-import org.exbin.framework.undo.api.UndoModuleApi;
+import org.exbin.framework.operation.undo.api.OperationUndoModuleApi;
 import org.exbin.framework.api.XBApplicationModuleRepository;
 import org.exbin.framework.utils.LanguageUtils;
 import org.exbin.framework.preferences.PreferencesWrapper;
@@ -50,6 +51,7 @@ import org.exbin.framework.preferences.PreferencesWrapper;
  * @version 0.2.0 2016/08/18
  * @author ExBin Project (http://exbin.org)
  */
+@ParametersAreNonnullByDefault
 public class ExbinIs {
 
     /**
@@ -105,7 +107,7 @@ public class ExbinIs {
                 ActionModuleApi actionModule = moduleRepository.getModuleByInterface(ActionModuleApi.class);
                 AboutModuleApi aboutModule = moduleRepository.getModuleByInterface(AboutModuleApi.class);
                 HelpModuleApi helpModule = moduleRepository.getModuleByInterface(HelpModuleApi.class);
-                UndoModuleApi undoModule = moduleRepository.getModuleByInterface(UndoModuleApi.class);
+                OperationUndoModuleApi undoModule = moduleRepository.getModuleByInterface(OperationUndoModuleApi.class);
                 DataModuleApi dataModule = moduleRepository.getModuleByInterface(DataModuleApi.class);
                 OptionsModuleApi optionsModule = moduleRepository.getModuleByInterface(OptionsModuleApi.class);
                 ExbinModule exbinModule = moduleRepository.getModuleByInterface(ExbinModule.class);
