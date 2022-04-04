@@ -4,8 +4,8 @@ include ":deps"
 
 include ":modules:exbin-is-framework"
 
-include ":tools:exbin_is"
-include ":tools:exbin_service"
+include ":apps:exbin_is"
+include ":apps:exbin_service"
 
 File placeholder = file("deps/.downloaded")
 if (placeholder.exists()) {
