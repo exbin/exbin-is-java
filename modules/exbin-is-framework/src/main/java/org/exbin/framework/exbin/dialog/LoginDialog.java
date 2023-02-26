@@ -347,7 +347,7 @@ public class LoginDialog extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         WindowUtils.invokeWindow(new LoginDialog(new javax.swing.JFrame(), true));
     }
 
