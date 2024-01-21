@@ -16,7 +16,7 @@ ext.depsExbinIsJava = [
 ext.depsExbinAuxiliaryJava = [
     githubProfile: 'exbin',
     githubRepo: 'exbin-Auxiliary-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 ext.depsXbupJava = [
@@ -40,7 +40,7 @@ ext.depsExbinFrameworkJava = [
 ext.depsBinedLibJava = [
     githubProfile: 'exbin',
     githubRepo: 'bined-lib-java',
-    version: '0.2.0-SNAPSHOT'
+    version: '0.2.1-SNAPSHOT'
 ]
 
 import org.gradle.util.VersionNumber
@@ -74,7 +74,7 @@ if (!gradle.startParameter.taskNames.any {it.endsWith("test")}) {
 }
 
 task testJar(type: Jar, dependsOn: testClasses) {
-    classifier "tests"
+    archiveClassifier = 'tests'
     archiveBaseName = "test-${project.archivesBaseName}"
     from sourceSets.test.output
 }
@@ -88,7 +88,7 @@ artifacts {
 }
 
 task sourceJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.java
 }
 
@@ -99,7 +99,7 @@ javadoc {
 }
 
 task javadocJar (type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
 }
 
@@ -108,7 +108,7 @@ publishing {
         maven(MavenPublication) {
             from components.java
             artifact sourceJar {
-                classifier 'sources'
+                archiveClassifier = 'sources'
             }
             artifact (javadocJar) {
                 classifier = 'javadoc'
@@ -155,10 +155,10 @@ if (gradle.startParameter.taskNames.contains("uploadArchives") && !version.endsW
             maven(MavenPublication) {
                 from components.java
                 artifact sourceJar {
-                    classifier "sources"
+                    archiveClassifier = 'sources'
                 }
                 artifact (javadocJar) {
-                    classifier = 'javadoc'
+                    archiveClassifier = 'javadoc'
                 }
 
                 pom.withXml {
